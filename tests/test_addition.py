@@ -19,7 +19,7 @@ def test_add():
             assert "1" in handle
         finally:
           if(AssertionError):
-            allure.attach(driver.get_screenshot_as_png(),name="Handle wrong", attachment_type=allure.attachment_type.PNG)
+            allure.attach(driver.get_screenshot_as_png(),name="Handle is wrong", attachment_type=allure.attachment_type.PNG)
         driver.quit()
 @allure.description("Testcase to add String")
 @allure.severity(severity_level="NORMAL")
