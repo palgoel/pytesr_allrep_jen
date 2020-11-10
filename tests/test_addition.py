@@ -15,12 +15,12 @@ def test_add():
         driver.maximize_window()
         driver.get("http://www.google.com")
         handle = driver.current_window_handle
-        try:
-            assert "1" in handle
-        finally:
-          if(AssertionError):
-            allure.attach(driver.get_screenshot_as_png(),name="Handle is wrong", attachment_type=allure.attachment_type.PNG)
-        driver.quit()
+#         try:
+#             assert "1" in handle
+#         finally:
+#           if(AssertionError):
+#             allure.attach(driver.get_screenshot_as_png(),name="Handle is wrong", attachment_type=allure.attachment_type.PNG)
+#         driver.quit()
 @allure.description("Testcase to add String")
 @allure.severity(severity_level="NORMAL")
 def test_add_string():
