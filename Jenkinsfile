@@ -4,21 +4,19 @@ pipeline {
     stages {
         stage('Build Image') {
             steps {
-		    script{
+				script{
                			 app = "docker build -t palgoel/pytest_calculator ."
-		    }
+				}
             }
         }
         stage('Push Image') {
             steps {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
-   		                bat "docker login --username=${user} --password=${pass}"
-						script {
-							app.push("${BUILD_NUMBER}")
-							app.push("latest"
-						}
-			    	
-                    }	
+                    script {
+						docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+			        	app.push("${BUILD_NUMBER}")
+			            app.push("latest")
+			        }
+                }
             }
 		} 
     }
