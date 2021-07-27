@@ -2,26 +2,24 @@ pipeline {
     // master executor should be set to 0
     agent any
     stages {
-	    stage('checkout') {
+        stage('checkout') {
             steps{
-             checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [[$class: 'CleanBeforeCheckout']], userRemoteConfigs: [[credentialsId: 'github_credential', url: 'https://github.com/palgoel/pytesr_allrep_jen/']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [[$class: 'CleanBeforeCheckout']], userRemoteConfigs: [[credentialsId: 'github_credential', url: 'https://github.com/palgoel/pytesr_allrep_jen.git']]])
             }
         }
         stage('Build Image') {
             steps {
-				script{
-               			 app = "docker build -t palgoel/pytest_calculator ."
-				}
+                    bat "docker build -t palgoel/pytest_calculator ."
             }
         }
         stage('Push Image') {
             steps {
-                    script {
-						docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-			        	app.push("${BUILD_NUMBER}")
-			            app.push("latest")
-			        }
-                }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    //sh
+			        bat "docker login --username=${user} --password=${pass}"
+			        bat "docker push palgoel/pytest_calculator:latest"
+			    }    
+
             }
 		} 
     }
