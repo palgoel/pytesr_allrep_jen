@@ -13,10 +13,10 @@ pipeline {
             steps {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
    		                bat "docker login --username=${user} --password=${pass}"
-			   	sript {
-				   	app.push("${BUILD_NUMBER}")
-			            	app.push("latest"
-			        }
+						sript {
+							app.push("${BUILD_NUMBER}")
+							app.push("latest"
+						}
 			    	
                     }	
             }
