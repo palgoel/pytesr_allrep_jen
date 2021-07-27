@@ -4,8 +4,7 @@ pipeline {
     stages {
         stage('checkout'){
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'dockerhub', url: 'https://github.com/palgoel/pytesr_allrep_jen']]])
-            }
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github_credential', url: 'https://github.com/palgoel/pytesr_allrep_jen']]])            }
         }
         stage('Build Image') {
             steps {
@@ -15,12 +14,11 @@ pipeline {
         }
         stage('Push Image') {
             steps {
-			    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                    //sh
-			        bat "docker login --username=${user} --password=${pass}"
-			        bat "docker push palgoel/pytest_calculator:latest"
-			    }                           
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'pass', usernameVariable: 'user')]) {
+   		                bat "docker login --username=${user} --password=${pass}"
+			            bat "docker push palgoel/pytest_calculator:latest"
+                    }	
             }
-        }
+		} 
     }
 }
